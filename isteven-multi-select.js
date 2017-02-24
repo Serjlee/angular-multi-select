@@ -741,12 +741,15 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         $scope.onSelectNone();                        
                         break;
                     case 'RESET':            
-                        angular.forEach( $scope.filteredModel, function( value, key ) {                            
-                            if ( typeof value[ attrs.groupProperty ] === 'undefined' && typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {                        
-                                var temp = value[ $scope.indexProperty ];                                
-                                value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
-                            }
-                        });               
+						// Do not restore if the backup is not updated.
+						if ($scope.backUp.length === $scope.filteredModel.length) {
+							angular.forEach( $scope.filteredModel, function( value, key ) {                            
+								if ( typeof value[ attrs.groupProperty ] === 'undefined' && typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {                        
+									var temp = value[ $scope.indexProperty ];                                
+									value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
+								}
+							});           
+						}    
                         $scope.refreshOutputModel();                                    
                         $scope.refreshButton();                                                                          
                         $scope.onReset();                        
